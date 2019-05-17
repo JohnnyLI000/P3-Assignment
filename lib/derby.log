@@ -1,0 +1,20 @@
+Fri Mar 15 09:45:41 NZDT 2019 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Fri Mar 15 09:45:42 NZDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-0169-7df4-121f-0000403df0dd 
+on database directory C:\Users\Yuan Hao Li\OneDrive\×ÀÃæ\BCIS\P3\P3 Assignment1\lib\Question And answer with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_172/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_172-b11
+user.dir=C:\Program Files\Java\jdk1.8.0_172\db
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\Yuan Hao Li\OneDrive\×ÀÃæ\BCIS\P3\P3 Assignment1\lib
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Fri Mar 15 10:07:18 NZDT 2019: Shutting down Derby engine
+----------------------------------------------------------------
+Fri Mar 15 10:07:18 NZDT 2019:
+Shutting down instance a816c00e-0169-7df4-121f-0000403df0dd on database directory C:\Users\Yuan Hao Li\OneDrive\×ÀÃæ\BCIS\P3\P3 Assignment1\lib\Question And answer with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+----------------------------------------------------------------
