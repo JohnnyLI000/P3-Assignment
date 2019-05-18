@@ -65,12 +65,12 @@ public class ContestGUI extends JFrame{
     public ContestGUI() {
         super();
         startGame();
-        playerInformationFrame(); // let the contest frame wait ,by using thread 
+        playerInformationFrame(); // let the contest frame wait ,by using thread   ：：：：hava not done 
 
     }
 
     
-    public void startGame()
+    public void startGame()  // generate the Game frame and connect to the database
     {
         establishMySQLConnection();
         this.setSize(width / 3 * 2, height / 3 * 2);
@@ -389,7 +389,7 @@ public class ContestGUI extends JFrame{
         }
     }
     
-    public void playerInformationFrame()
+    public void playerInformationFrame() //;;havenot finish this part yet 
     {
        JFrame playerInformationFrame = new JFrame();
        playerInformationFrame.setSize(width / 3 , height / 3 );
