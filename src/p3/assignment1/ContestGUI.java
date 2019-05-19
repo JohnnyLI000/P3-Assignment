@@ -44,7 +44,7 @@ public class ContestGUI extends JFrame{
     int width = screenSize.width;
     int height = screenSize.height;
     public static Connection conn;
-    public static String url = "jdbc:derby://localhost:1527/Question&Answer;create=true";
+    public static String url = "jdbc:derby:Question&Answer;create=true";
     public static String username = "johnny";
     public static String password = "johnny";
 
