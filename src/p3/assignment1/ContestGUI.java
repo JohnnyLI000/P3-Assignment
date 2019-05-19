@@ -65,7 +65,8 @@ public class ContestGUI extends JFrame{
     public ContestGUI() {
         super();
         startGame();
-        playerInformationFrame(); // let the contest frame wait ,by using thread   ：：：：hava not done 
+        PlayerInformationGUI playerGUI = new PlayerInformationGUI();
+        playerGUI.playerInformationFrame(); // let the contest frame wait ,by using thread   ：：：：hava not done 
 
     }
 
@@ -389,23 +390,7 @@ public class ContestGUI extends JFrame{
         }
     }
     
-    public void playerInformationFrame() //;;havenot finish this part yet 
-    {
-       JFrame playerInformationFrame = new JFrame();
-       playerInformationFrame.setSize(width / 3 , height / 3 );
-       playerInformationFrame.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
-       playerInformationFrame.setLayout(new GridLayout(2,1,100,100));
-         JPanel inputPanel = new JPanel();  
-         playerInformationFrame.add(inputPanel);
-         inputPanel.setBackground(Color.red);
-       inputName= new JTextField("Player Name: ");
-
-       JButton submitButton = new JButton("Submit");
-       
-      
-       playerInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       playerInformationFrame.setVisible(true);
-    }
+    
     public static void main(String[] args) {
 
         ContestGUI contestFrame = new ContestGUI();
