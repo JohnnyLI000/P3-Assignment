@@ -48,7 +48,7 @@ public class ContestGUI extends JFrame{
     public static String username = "johnny";
     public static String password = "johnny";
 
-    private String question = "", a = "", b = "", c = "", d = "", answer = "", hint = "", playerAnswer = "";
+    private String question = "", a = "", b = "", c = "", d = "", answer = "", hint = "", playerAnswer = "", audience = "You can ask someone about this question";
     private JPanel informationPanel, questionPanel, userInputPanel, optionsPanel,prizePanel,displayPanel;
     private JButton aButton,bButton,cButton,dButton,hintButton,audienceButton,halfButton;
     private JLabel questionLabel,nextPrize,currentPrize,displayLabel;
@@ -150,18 +150,13 @@ public class ContestGUI extends JFrame{
         displayPanel.setBackground(gray);
     }
 
-    public JPanel scorePanel() {
+    public JPanel scorePanel() { //NEEDS TO BE DONE , this display the player previous score and the top 3 
         JPanel scorePanel = new JPanel();
         scorePanel.setBackground(Color.red);
         return scorePanel;
     }
 
   public void prizePanel() {
-        // Panel Creation
-        // Create the JLabel
-        // Put it in the grid layout of 1 and 2
-        // Set the text of prize
-        // Set text for the nextPrize
         prizePanel = new JPanel();
         currentPrize = new JLabel("Current Prize: "+String.valueOf(prize));
         nextPrize = new JLabel("Prize Goal: "+String.valueOf(prizeGoal));
@@ -170,14 +165,12 @@ public class ContestGUI extends JFrame{
 
         prizePanel.setLayout(new GridLayout(2,1));
         prizePanel.setBackground(gray);
-        //currentPrize.setText("Current Prize: " + String.valueOf(prize));
-        //nextPrize.setText("Next Prize: " + String.valueOf(prize * 2));
         prizePanel.add(currentPrize);
         prizePanel.add(nextPrize);
     }
 
 
-    public void questionPanel() { // win: repaint    BUGS: the font is too big  ;;doesnot do the repaint
+    public void questionPanel() { 
         questionPanel = new JPanel();
         questionPanel.setBackground(gray);
         questionPanel.setLayout(new BorderLayout());
@@ -291,7 +284,7 @@ public class ContestGUI extends JFrame{
             jb.setBorder(new LineBorder(Color.black, 4));
         }
     }
-    private class helpButtonsMouseListener implements MouseListener  // have not done the Audience and half half yet *********************
+    private class helpButtonsMouseListener implements MouseListener  // have not done the Audience and half half yet 
     {
 
         JButton jb;
@@ -300,10 +293,21 @@ public class ContestGUI extends JFrame{
             jb = (JButton) e.getSource(); 
             if(jb.equals(hintButton))
             {
-                System.out.println("hii");
+                System.out.println("Hint Pressed");
                 
                 displayPanel.removeAll();
                 displayLabel = new JLabel(hint);
+                displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
+                displayPanel.add(displayLabel);
+                displayPanel.revalidate();
+            }
+            
+            else if (jb.equals(audienceButton))
+            {
+                System.out.println("Auidence Pressed");
+                
+                displayPanel.removeAll();
+                displayLabel = new JLabel(audience); //need to add the text
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
                 displayPanel.add(displayLabel);
                 displayPanel.revalidate();
