@@ -291,13 +291,13 @@ public class ContestGUI extends JFrame{
             jb.setBorder(new LineBorder(Color.black, 4));
         }
     }
-    private class helpButtonsMouseListener implements MouseListener
+    private class helpButtonsMouseListener implements MouseListener  // have not done the Audience and half half yet *********************
     {
 
         JButton jb;
         @Override
         public void mouseClicked(MouseEvent e) {
-            jb = (JButton) e.getSource();
+            jb = (JButton) e.getSource(); 
             if(jb.equals(hintButton))
             {
                 System.out.println("hii");
