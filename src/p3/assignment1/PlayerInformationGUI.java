@@ -27,20 +27,25 @@ public class PlayerInformationGUI extends JFrame {
     private JTextField inputName;
     private String playerName;
     
-    public void playerInformationFrame() //;;havenot finish this part yet 
+    public void playerInformationFrame() //;;have not finish this part yet 
     {
-       JFrame playerInformationFrame = new JFrame();
+       JFrame playerInformationFrame = new JFrame("Player Enter");
        playerInformationFrame.setSize(width / 3 , height / 3 );
        playerInformationFrame.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
-       playerInformationFrame.setLayout(new GridLayout(2,1,100,100));
-         JPanel inputPanel = new JPanel();  
-         playerInformationFrame.add(inputPanel);
-         inputPanel.setBackground(Color.red);
-       inputName= new JTextField("Player Name: ");
-
-       JButton submitButton = new JButton("Submit");
+       playerInformationFrame.setLayout(new GridLayout(2,1,100,100));  // seperate it into two parts 
        
+       JPanel inputPanel = new JPanel();  
+        playerInformationFrame.add(inputPanel);
+       inputPanel.setBackground(Color.red);
+       inputName= new JTextField("Player Name: ");
+       inputPanel.add(inputName);
+       
+       JButton submitButton = new JButton("Submit");
+       playerInformationFrame.add(submitButton);
       
+       
+       
+       
        playerInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        playerInformationFrame.setVisible(true);
     }
