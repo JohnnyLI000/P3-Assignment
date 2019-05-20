@@ -70,7 +70,7 @@ public class ContestGUI extends JFrame{
 
     }
 
-    //riki hello riki
+    //riki hello riki johnny johnny
     public void startGame()  // generate the Game frame and connect to the database
     {
         establishMySQLConnection();
