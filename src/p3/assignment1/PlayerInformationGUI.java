@@ -46,11 +46,6 @@ public class PlayerInformationGUI extends JFrame {
         topPanel.add(playerName);
         topPanel.add(inputName);
 
-//        playerInformationFrame.add(topPanel);
-////        playerInformationFrame.add(playerName);
-//       topPanel.setBackground(Color.red);
-//       inputName= new JTextField();
-//       topPanel.add(inputName);
         JPanel bottomPanel = new JPanel();
         JButton submitButton = new JButton("Submit");
         submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
