@@ -48,11 +48,11 @@ public class ContestGUI extends JFrame{
     public static String username = "johnny";
     public static String password = "johnny";
 
-    private String question = "", a = "", b = "", c = "", d = "", answer = "", hint = "", playerAnswer = "", audience = "You can ask someone about this question";
+    private String question = "", a = "", b = "", c = "", d = "", answer = "", hint = "", playerAnswer = "", audience = "Ask Someone Next To You";
     private JPanel informationPanel, questionPanel, userInputPanel, optionsPanel,prizePanel,displayPanel;
     private JButton aButton,bButton,cButton,dButton,hintButton,audienceButton,halfButton;
     private JLabel questionLabel,nextPrize,currentPrize,displayLabel;
-    private ImageIcon logoIcon = new ImageIcon("Logo2.png");
+    private ImageIcon logoIcon = new ImageIcon(new ImageIcon("Logo2.png").getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
     private JTextField inputName;
     private String playerName;
     public boolean check = true;
@@ -302,12 +302,12 @@ public class ContestGUI extends JFrame{
                 displayPanel.revalidate();
             }
             
-            else if (jb.equals(audienceButton))
+            else if (jb.equals(audienceButton)) // display audience panel
             {
                 System.out.println("Auidence Pressed");
                 
                 displayPanel.removeAll();
-                displayLabel = new JLabel(audience); //need to add the text
+                displayLabel = new JLabel(audience); 
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
                 displayPanel.add(displayLabel);
                 displayPanel.revalidate();
