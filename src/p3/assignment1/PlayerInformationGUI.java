@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,14 +30,16 @@ public class PlayerInformationGUI extends JFrame {
     int height = screenSize.height;
 
     private JTextField inputName;
-    private String playerName;
+//    private String playerName;
+    private JButton submitButton;
+   
 
     public void playerInformationFrame() //;;have not finish this part yet 
     {
         JFrame playerInformationFrame = new JFrame("Player Enter");
         playerInformationFrame.setSize(width / 2, height / 2);
         playerInformationFrame.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
-        playerInformationFrame.setLayout(new GridLayout(2, 1, 100, 100));  // seperate it into two parts 
+        playerInformationFrame.setLayout(new GridLayout(3, 1));  // seperate it into two parts 
 
         //Top Panel
         JPanel topPanel = new JPanel();
@@ -45,20 +49,46 @@ public class PlayerInformationGUI extends JFrame {
         topPanel.setBackground(Color.red);
         topPanel.add(playerName);
         topPanel.add(inputName);
+        
+       //NEED CENTER PANEL
+        JPanel centerPanel = new JPanel();
+        JLabel text = new JLabel("");
+        text.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
+        centerPanel.add(text);
+        centerPanel.setBackground(Color.yellow);
 
         //Bottom Panel
         JPanel bottomPanel = new JPanel();
-        JButton submitButton = new JButton("Submit");
+        submitButton = new JButton("Submit");
         submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
         bottomPanel.setBackground(Color.green);
         bottomPanel.add(submitButton);
         
-        //NEED CENTER PANEL
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = inputName.getText();
+                System.out.println("Name Printing");
+                text.setText(str);
+                centerPanel.repaint();
+            }
+        });
         
         //Adding to frame
         playerInformationFrame.add(topPanel, BorderLayout.NORTH);
+        playerInformationFrame.add(centerPanel, BorderLayout.CENTER);
         playerInformationFrame.add(bottomPanel, BorderLayout.SOUTH);
         playerInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playerInformationFrame.setVisible(true);
+        
+        
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = inputName.getText();
+                text.setText(str);
+                centerPanel.repaint();
+            }
+        });
     }
 }
