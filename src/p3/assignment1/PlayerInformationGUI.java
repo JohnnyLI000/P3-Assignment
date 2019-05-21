@@ -37,21 +37,25 @@ public class PlayerInformationGUI extends JFrame {
         playerInformationFrame.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
         playerInformationFrame.setLayout(new GridLayout(2, 1, 100, 100));  // seperate it into two parts 
 
+        //Top Panel
         JPanel topPanel = new JPanel();
         JLabel playerName = new JLabel("Player Name:");
         inputName = new JTextField(20);
-        
         playerName.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
         topPanel.setBackground(Color.red);
         topPanel.add(playerName);
         topPanel.add(inputName);
 
+        //Bottom Panel
         JPanel bottomPanel = new JPanel();
         JButton submitButton = new JButton("Submit");
         submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
         bottomPanel.setBackground(Color.green);
         bottomPanel.add(submitButton);
         
+        //NEED CENTER PANEL
+        
+        //Adding to frame
         playerInformationFrame.add(topPanel, BorderLayout.NORTH);
         playerInformationFrame.add(bottomPanel, BorderLayout.SOUTH);
         playerInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
