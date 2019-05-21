@@ -52,7 +52,7 @@ public class ContestGUI extends JFrame{
     private JPanel informationPanel, questionPanel, userInputPanel, optionsPanel,prizePanel,displayPanel;
     private JButton aButton,bButton,cButton,dButton,hintButton,audienceButton,halfButton;
     private JLabel questionLabel,nextPrize,currentPrize,displayLabel;
-    private ImageIcon logoIcon = new ImageIcon(new ImageIcon("Logo2.png").getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
+    private ImageIcon logoIcon = new ImageIcon(new ImageIcon("Logo2.png").getImage().getScaledInstance(250, 250, Image.SCALE_DEFAULT));
     private JTextField inputName;
     private String playerName;
     public boolean check = true;
