@@ -13,6 +13,10 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -71,6 +75,8 @@ public class PlayerInformationGUI extends JFrame {
                 System.out.println("Name Printing");
                 text.setText(str);
                 centerPanel.repaint();
+                output(str);
+                playerInformationFrame.setVisible(false);
             }
         });
         
@@ -82,13 +88,26 @@ public class PlayerInformationGUI extends JFrame {
         playerInformationFrame.setVisible(true);
         
         
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String str = inputName.getText();
-                text.setText(str);
-                centerPanel.repaint();
-            }
-        });
+        
+      
+    }
+     public void output(String content) {  //output player information into text 
+        FileWriter fw = null;
+        try {
+            File f = new File("PlayerInformation.txt");
+            fw = new FileWriter(f, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PrintWriter pw = new PrintWriter(fw);
+        pw.println(content);
+        pw.flush();
+        try {
+            fw.flush();
+            pw.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
