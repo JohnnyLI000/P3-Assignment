@@ -39,7 +39,7 @@ import javax.swing.border.LineBorder;
  * @author Yuan Hao Li
  */
 public class ContestGUI extends JFrame{
-
+//testo
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int width = screenSize.width;
     int height = screenSize.height;
