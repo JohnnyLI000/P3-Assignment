@@ -18,6 +18,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -51,7 +54,7 @@ public class ContestGUI extends JFrame implements Runnable{
     private String question = "", a = "", b = "", c = "", d = "", answer = "", hint = "", playerAnswer = "", audience = "Ask Someone Next To You";
     private JPanel informationPanel, questionPanel, userInputPanel, optionsPanel,prizePanel,displayPanel;
     private JButton aButton,bButton,cButton,dButton,hintButton,audienceButton,halfButton;
-    private JLabel questionLabel,nextPrize,currentPrize,displayLabel;
+    private JLabel questionLabel,nextPrize,currentPrize,displayLabel,playerLabel;
     private ImageIcon logoIcon = new ImageIcon(new ImageIcon("Logo2.png").getImage().getScaledInstance(250, 250, Image.SCALE_DEFAULT));
     private JTextField inputName;
     private String playerName;
@@ -110,7 +113,7 @@ public class ContestGUI extends JFrame implements Runnable{
     
     
 
-    public ResultSet getQA() // if it is correct ,get the  qa ; INITIALIZE Q , a,b,c,d,hint,anser  ;; get QA , generate questionpanel and userinput panel. ;; doesnot function the repaint 
+    public ResultSet getQA()
     {
         ResultSet rs = null;
         try {
@@ -165,7 +168,11 @@ public class ContestGUI extends JFrame implements Runnable{
 
     public JPanel scorePanel() { //NEEDS TO BE DONE , this display the player previous score and the top 3 
         JPanel scorePanel = new JPanel();
-        scorePanel.setBackground(Color.red);
+        playerLabel = new JLabel();
+        playerLabel.setText("Current Player: " + playerGUI.getPlayerName());
+        playerLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
+        scorePanel.setBackground(gray);
+        scorePanel.add(playerLabel);
         return scorePanel;
     }
 
@@ -392,9 +399,22 @@ public class ContestGUI extends JFrame implements Runnable{
     public void exitGame()
     {
         System.out.println("You got : "+prize +"    Your goal :"+prizeGoal);
+        outputTheScore(prize);
         System.exit(0);
         this.dispose();
         this.setVisible(false);
+    }
+    
+    public void outputTheScore(int score)
+    {
+        try{
+         PrintWriter outputStream = new PrintWriter(new FileOutputStream("PlayerInformation.txt",true));
+         outputStream.println(" "+score);
+         outputStream.close();
+        }catch(FileNotFoundException e){
+           System.out.println("Error opening the file out.txt."+ e.getMessage());
+        }
+
     }
     public void prizeCount(int questionNo)  // start from 100 , next question is a double the prize of the privous one 
     {
@@ -406,8 +426,6 @@ public class ContestGUI extends JFrame implements Runnable{
             prizeGoal *=2;
         }
     }
-    
-    
     public static void main(String[] args) {
 
         ContestGUI contestFrame = new ContestGUI();

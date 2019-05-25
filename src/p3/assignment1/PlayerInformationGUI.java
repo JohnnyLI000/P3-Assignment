@@ -109,7 +109,7 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
             e.printStackTrace();
         }
         PrintWriter pw = new PrintWriter(fw);
-        pw.println(content);
+        pw.print("\n"+content);
         pw.flush();
         try {
             fw.flush();
@@ -123,6 +123,11 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
     public boolean getIsClosed()
     {
         return isClosed;
+    }
+    
+    public String getPlayerName()
+    {
+        return inputName.getText();
     }
     public synchronized void notifyUser() {
         synchronized(frame)
