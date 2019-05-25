@@ -38,7 +38,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Yuan Hao Li
  */
-public class ContestGUI extends JFrame{
+public class ContestGUI extends JFrame implements Runnable{
 //testo
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int width = screenSize.width;
@@ -56,7 +56,7 @@ public class ContestGUI extends JFrame{
     private JTextField inputName;
     private String playerName;
     public boolean check = true;
-    
+    PlayerInformationGUI playerGUI ;
     Color gold = new Color(233, 139, 42);
     Color pink = new Color(254,223,225);
     Color gray = new Color(218,201,166);
@@ -64,13 +64,9 @@ public class ContestGUI extends JFrame{
     private int prize = 0 ,prizeGoal=100;
     public ContestGUI() {
         super();
-        startGame();
-        PlayerInformationGUI playerGUI = new PlayerInformationGUI();
-        playerGUI.playerInformationFrame(); // let the contest frame wait ,by using thread   ：：：：hava not done 
-
+        playerGUI = new PlayerInformationGUI(this);
     }
 
-    //riki likes sausage
     public void startGame()  // generate the Game frame and connect to the database
     {
         establishMySQLConnection();
@@ -87,7 +83,22 @@ public class ContestGUI extends JFrame{
         this.add(userInputPanel);
         this.setVisible(true);
     }
-    
+
+    public void run() {
+        synchronized (this) {
+            if (!playerGUI.getIsClosed()) {
+                try {
+                    System.out.println("contest start to wait");
+                    this.wait();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("finished waitting");
+            this.startGame();
+        }
+    }
+
     public void establishMySQLConnection() {
         try {
             conn = DriverManager.getConnection(url, username, password);
@@ -96,6 +107,8 @@ public class ContestGUI extends JFrame{
             System.err.println(ex.getMessage());
         }
     }
+    
+    
 
     public ResultSet getQA() // if it is correct ,get the  qa ; INITIALIZE Q , a,b,c,d,hint,anser  ;; get QA , generate questionpanel and userinput panel. ;; doesnot function the repaint 
     {
@@ -398,5 +411,9 @@ public class ContestGUI extends JFrame{
     public static void main(String[] args) {
 
         ContestGUI contestFrame = new ContestGUI();
+        Thread contestThread = new Thread(contestFrame);
+        Thread playerThread = new Thread(contestFrame.playerGUI);
+        contestThread.start();
+        playerThread.start();
     }
 }

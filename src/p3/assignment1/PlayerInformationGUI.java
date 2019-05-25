@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,17 +28,23 @@ import javax.swing.JTextField;
  *
  * @author Yuan Hao Li
  */
-public class PlayerInformationGUI extends JFrame {
+public class PlayerInformationGUI extends JFrame implements Runnable{
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int width = screenSize.width;
     int height = screenSize.height;
-
     private JTextField inputName;
 //    private String playerName;
     private JButton submitButton;
-   
+    private boolean isClosed = false;
 
+    private Frame frame;
+    public  PlayerInformationGUI(JFrame frame)
+    {
+        this.frame = frame;
+        System.out.println("This is player GUI");
+        
+    }
     public void playerInformationFrame() //;;have not finish this part yet 
     {
         JFrame playerInformationFrame = new JFrame("Player Enter");
@@ -53,8 +60,8 @@ public class PlayerInformationGUI extends JFrame {
         topPanel.setBackground(Color.red);
         topPanel.add(playerName);
         topPanel.add(inputName);
-        
-       //NEED CENTER PANEL
+
+        //NEED CENTER PANEL
         JPanel centerPanel = new JPanel();
         JLabel text = new JLabel("");
         text.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
@@ -67,7 +74,7 @@ public class PlayerInformationGUI extends JFrame {
         submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
         bottomPanel.setBackground(Color.green);
         bottomPanel.add(submitButton);
-        
+
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,22 +83,24 @@ public class PlayerInformationGUI extends JFrame {
                 text.setText(str);
                 centerPanel.repaint();
                 output(str);
+                isClosed = true;
+                System.out.println("Setted the isclosed = true");
+                notifyUser();
                 playerInformationFrame.setVisible(false);
+                
             }
         });
-        
+
         //Adding to frame
         playerInformationFrame.add(topPanel, BorderLayout.NORTH);
         playerInformationFrame.add(centerPanel, BorderLayout.CENTER);
         playerInformationFrame.add(bottomPanel, BorderLayout.SOUTH);
         playerInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playerInformationFrame.setVisible(true);
-        
-        
-        
-      
+
     }
-     public void output(String content) {  //output player information into text 
+
+    public void output(String content) {  //output player information into text 
         FileWriter fw = null;
         try {
             File f = new File("PlayerInformation.txt");
@@ -109,5 +118,22 @@ public class PlayerInformationGUI extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean getIsClosed()
+    {
+        return isClosed;
+    }
+    public synchronized void notifyUser() {
+        synchronized(frame)
+        {
+       System.out.println("notifyyyyy");
+       frame.notifyAll();
+        }
+    }
+
+    @Override
+    public void run() {
+        this.playerInformationFrame();
     }
 }
