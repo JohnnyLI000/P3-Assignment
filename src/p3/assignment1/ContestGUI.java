@@ -32,6 +32,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -180,11 +184,11 @@ public class ContestGUI extends JFrame implements Runnable {
         playerLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         scorePanel.setBackground(gray);
         scorePanel.add(playerLabel);
-        findTheTop3();
+//        findTheTop3();
 
-        JLabel top1Label = new JLabel("Top 1 " + playerArray[0]);
-        JLabel top2Label = new JLabel("Top 2 " + playerArray[1]);
-        JLabel top3Label = new JLabel("Top 3 " + playerArray[2]);
+        JLabel top1Label = new JLabel("Top 1 ");
+        JLabel top2Label = new JLabel("Top 2 ");
+        JLabel top3Label = new JLabel("Top 3 ");
         top1Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         top2Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         top3Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
@@ -347,6 +351,54 @@ public class ContestGUI extends JFrame implements Runnable {
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
                 displayPanel.add(displayLabel);
                 displayPanel.revalidate();
+            } else if (jb.equals(halfButton)) // display audience panel
+            {
+                System.out.println("HalfButton Pressed");
+
+                displayPanel.removeAll();
+//                Random random = new Random();
+//                int optionNum;
+//                boolean success = false;
+//                do {
+//                    optionNum = random.nextInt(4);
+//                    switch (optionNum) {
+//                        case 0:
+//                            if (a.charAt(0) != answer.charAt(8)) {
+//                                System.out.println(a.charAt(0));
+//                                System.out.println(answer.charAt(8));
+//                                success = true;
+//                                break;
+//
+//                            }
+//                        case 1:
+//                            if (b.charAt(0) != answer.charAt(8)) {
+//                                System.out.println(b.charAt(0));
+//                                System.out.println(answer.charAt(8));
+//                                success = true;
+//                                break;
+//                            }
+//                        case 2:
+//                            if (c.charAt(0) != answer.charAt(8)) {
+//                                System.out.println(c.charAt(0));
+//                                System.out.println(answer.charAt(8));
+//                                success = true;
+//                                break;
+//
+//                            }
+//                        case 3:
+//                            if (d.charAt(0) != answer.charAt(8)) {
+//                                System.out.println(d.charAt(0));
+//                                System.out.println(answer.charAt(8));
+//                                success = true;
+//                                break;
+//
+//                            }
+//                    }
+//                } while (success == false);
+//                displayLabel = new JLabel(audience);
+//                displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
+//                displayPanel.add(displayLabel);
+//                displayPanel.revalidate();
             }
         }
 
@@ -440,129 +492,179 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    public void findTheTop3() {
-        int top1=0, top2=0, top3=0;
-        ArrayList<Integer> scoreList = new ArrayList<Integer>();
-        playerArray = new String[3];
-
-        //try to find the best 3 player's scores 
+    public static Map<String, Integer> readPlayerInfo() {
+        Map<String, Integer> playerFile = new HashMap<>();
+        BufferedReader br = null;
         try {
-            FileReader fr = new FileReader("PlayerInformation.txt");
-            BufferedReader inputStream = new BufferedReader(fr);
-            String line = null;
-            while ((line = inputStream.readLine()) != null) {
-                for (int i = 0; i < line.length(); i++) {
-                    if (line.charAt(i) == ':') // for example  Johnny Li,1000   : comma behind is score
-                    {
-                        try {
-                            System.out.println(line.substring(0, line.length()));
-                            Integer score = Integer.valueOf(line.substring(i + 1, line.length()));
-                            scoreList.add(score);
-                        } catch (NumberFormatException e) {
-                            System.err.println(e);
-                        }
-                    }
-                }
-
+            //read scores txt file
+            br = new BufferedReader(new FileReader("PlayerInformation.txt"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] splitString = line.split(" ");
+                playerFile.put(splitString[0], Integer.valueOf(splitString[1]));
             }
-            inputStream.close();
-
-        } catch (IOException e) {
-            System.out.println("File  not found.");
-        }
-
-        
-        Collections.sort(scoreList);//BUG if its below 3 players 
-      for(int i = 0 ;i<scoreList.size();i++)
-        {
-            System.out.println("Score : "+i +":  "+scoreList.get(i));
-        }
-      
-      
-        if (!scoreList.isEmpty()) {
-            top1 = scoreList.get(scoreList.size()-1);
-            if (scoreList.size()>1) {
-                top2 = scoreList.get(scoreList.size()-2);
-                if (scoreList.size()>2) {
-                    top3 = scoreList.get(scoreList.size()-3);
+        } catch (IOException ex) {
+            Logger.getLogger(ContestGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(ContestGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
         }
-        // try to find the best three player's name 
-        try {
-            FileReader fr = new FileReader("PlayerInformation.txt");
-            BufferedReader inputStream = new BufferedReader(fr);
-            String line = null;
-              int round =0 ;
-            while ((line = inputStream.readLine()) != null) {
-                for (int i = 0; i < line.length(); i++) {
-                    if (line.charAt(i) == ':') // for example  Johnny Li,1000   : comma behind is score
-                    {
-                        Integer score = Integer.valueOf(line.substring(i + 1, line.length()));
-                        
-                        if(top1 == top2&&top1 == top3) 
-                        {
-                            if(round<3)
-                            {
-                                playerArray[round] = line;
-                                round++;
-                                System.out.println(round + "Round top 1 == top2 == top3 ");
-                                continue;
-                            }
-                        }else if(top1 == top2)
-                        {
-                            if(round<2)
-                            {
-                                playerArray[round] = line;
-                                round++;
-                                System.out.println(round + "Round top 1 == top2 ");
-                                continue;
-                            }
-                        }
-                       
-                
-                        
-                        if(top2 == top3)
-                        {
-                          if(round<2)
-                          {
-                          playerArray[round+1] = line;
-                          System.out.println(round+1 + "Round top 2 == top3 ");
-                          round++;
-                          continue;
-                          }
-                  
-                        }
-                        
-      // ==================================================================================BUG ===============================
-                          if (score == top1) {
-                            playerArray[0] = line;
-                        }
-                        if(score == top2)
-                        {
-                            playerArray[1] = line;
-                        }
-                        if(score == top3)
-                        {
-                            playerArray[2] = line;
-                        }
-                    }
-                }
-
-            }
-            inputStream.close();
-
-        } catch (IOException e) {
-            System.out.println("File  not found.");
-        }
-        
-        for (int i = 0; i < playerArray.length; i++) {
-            System.out.println(i+" :"+playerArray[i]);
-        }
-
-
+        return playerFile;
     }
+
+    public static void writeToPlayerInfo(Map<String, Integer> records) {
+        PrintWriter pw = null;
+        try {
+            //create scores txt file
+            pw = new PrintWriter("PlayerInformation.txt");
+            for (Map.Entry<String, Integer> recordEntry : records.entrySet()) {
+                pw.println(recordEntry.getKey() + " " + recordEntry.getValue());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ContestGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
+        }
+    }
+    
+    public static String parseInput(Scanner scanner,Map<String,Integer> records){
+        String input = scanner.nextLine();
+            writeToPlayerInfo(records);
+            System.out.println("File saved.");
+            System.exit(0);
+        return input;
+    }
+    
+//    public void findTheTop3() {
+//        int top1=0, top2=0, top3=0;
+//        ArrayList<Integer> scoreList = new ArrayList<Integer>();
+//        playerArray = new String[3];
+//
+//        //try to find the best 3 player's scores 
+//        try {
+//            FileReader fr = new FileReader("PlayerInformation.txt");
+//            BufferedReader inputStream = new BufferedReader(fr);
+//            String line = null;
+//            while ((line = inputStream.readLine()) != null) {
+//                for (int i = 0; i < line.length(); i++) {
+//                    if (line.charAt(i) == ':') // for example  Johnny Li,1000   : comma behind is score
+//                    {
+//                        try {
+//                            System.out.println(line.substring(0, line.length()));
+//                            Integer score = Integer.valueOf(line.substring(i + 1, line.length()));
+//                            scoreList.add(score);
+//                        } catch (NumberFormatException e) {
+//                            System.err.println(e);
+//                        }
+//                    }
+//                }
+//
+//            }
+//            inputStream.close();
+//
+//        } catch (IOException e) {
+//            System.out.println("File  not found.");
+//        }
+//
+//        
+//        Collections.sort(scoreList);//BUG if its below 3 players 
+//      for(int i = 0 ;i<scoreList.size();i++)
+//        {
+//            System.out.println("Score : "+i +":  "+scoreList.get(i));
+//        }
+//      
+//      
+//        if (!scoreList.isEmpty()) {
+//            top1 = scoreList.get(scoreList.size()-1);
+//            if (scoreList.size()>1) {
+//                top2 = scoreList.get(scoreList.size()-2);
+//                if (scoreList.size()>2) {
+//                    top3 = scoreList.get(scoreList.size()-3);
+//                }
+//            }
+//
+//        }
+//        // try to find the best three player's name 
+//        try {
+//            FileReader fr = new FileReader("PlayerInformation.txt");
+//            BufferedReader inputStream = new BufferedReader(fr);
+//            String line = null;
+//              int round =0 ;
+//            while ((line = inputStream.readLine()) != null) {
+//                for (int i = 0; i < line.length(); i++) {
+//                    if (line.charAt(i) == ':') // for example  Johnny Li,1000   : comma behind is score
+//                    {
+//                        Integer score = Integer.valueOf(line.substring(i + 1, line.length()));
+//                        
+//                        if(top1 == top2&&top1 == top3) 
+//                        {
+//                            if(round<3)
+//                            {
+//                                playerArray[round] = line;
+//                                round++;
+//                                System.out.println(round + "Round top 1 == top2 == top3 ");
+//                                continue;
+//                            }
+//                        }else if(top1 == top2)
+//                        {
+//                            if(round<2)
+//                            {
+//                                playerArray[round] = line;
+//                                round++;
+//                                System.out.println(round + "Round top 1 == top2 ");
+//                                continue;
+//                            }
+//                        }
+//                       
+//                
+//                        
+//                        if(top2 == top3)
+//                        {
+//                          if(round<2)
+//                          {
+//                          playerArray[round+1] = line;
+//                          System.out.println(round+1 + "Round top 2 == top3 ");
+//                          round++;
+//                          continue;
+//                          }
+//                  
+//                        }
+//                        
+//      // ==================================================================================BUG ===============================
+//                          if (score == top1) {
+//                            playerArray[0] = line;
+//                        }
+//                        if(score == top2)
+//                        {
+//                            playerArray[1] = line;
+//                        }
+//                        if(score == top3)
+//                        {
+//                            playerArray[2] = line;
+//                        }
+//                    }
+//                }
+//
+//            }
+//            inputStream.close();
+//
+//        } catch (IOException e) {
+//            System.out.println("File  not found.");
+//        }
+//        
+//        for (int i = 0; i < playerArray.length; i++) {
+//            System.out.println(i+" :"+playerArray[i]);
+//        }
+//
+//
+//    }
 
     public static void main(String[] args) {
 
@@ -571,5 +673,10 @@ public class ContestGUI extends JFrame implements Runnable {
         Thread playerThread = new Thread(contestFrame.playerGUI);
         contestThread.start();
         playerThread.start();
+        
+        Map<String,Integer> records = readPlayerInfo();
+        System.out.println(records);
+        // Need to parse the input so file can be saved
+        // 
     }
 }
