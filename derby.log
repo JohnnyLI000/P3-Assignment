@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Thu May 30 21:04:20 NZST 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016b-07fb-a406-0000063f6648 
-on database directory C:\Users\Yuan Hao Li\Desktop\BCIS\P3\P3 Assignment V3\Question&Answer with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
-Loaded from file:/C:/Users/Yuan%20Hao%20Li/Desktop/BCIS/P3/P3%20Assignment/derby.jar
+Thu May 30 22:17:43 NZST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016b-083e-d105-00000671a2f0 
+on database directory /Users/Rikzter/Desktop/P3 Assignment/P3-assignment/Question&Answer with class loader sun.misc.Launcher$AppClassLoader@6e0be858 
+Loaded from file:/Users/Rikzter/Desktop/P3/NetBeans-Derby/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_172-b11
-user.dir=C:\Users\Yuan Hao Li\Desktop\BCIS\P3\P3 Assignment V3
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
+java.runtime.version=1.8.0_181-b13
+user.dir=/Users/Rikzter/Desktop/P3 Assignment/P3-assignment
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.5
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

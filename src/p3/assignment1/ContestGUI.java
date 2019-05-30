@@ -75,7 +75,7 @@ public class ContestGUI extends JFrame implements Runnable {
     private String question = "", a = "", b = "", c = "", d = "", answer = "", hint = "", playerAnswer = "", audience = "Ask Someone Next To You";
     private JPanel informationPanel, questionPanel, userInputPanel, optionsPanel, prizePanel, displayPanel;
     private JButton aButton, bButton, cButton, dButton, hintButton, audienceButton, halfButton;
-    private JLabel questionLabel, nextPrize, currentPrize, displayLabel, playerLabel;
+    private JLabel questionLabel, nextPrize, currentPrize, displayLabel, playerLabel, afterGameScoreLabel;
     private ImageIcon logoIcon = new ImageIcon(new ImageIcon("Logo2.png").getImage().getScaledInstance(250, 250, Image.SCALE_DEFAULT));
     private JTextField inputName;
     private String playerName;
@@ -86,11 +86,9 @@ public class ContestGUI extends JFrame implements Runnable {
     Color gray = new Color(218, 201, 166);
     private int questionID = 0;
     private int prize = 0, prizeGoal = 100;
-    private String[] playerArray; // top 3 players
-    HashMap<String,Integer> records;
-    
-    String top1,top2,top3;
-    
+    HashMap<String, Integer> records;
+    String top1, top2, top3;
+
     public ContestGUI() {
         super();
         playerGUI = new PlayerInformationGUI(this);
@@ -128,7 +126,7 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    public void establishMySQLConnection() {
+    public void establishMySQLConnection() { // Getting connection to database
         try {
             conn = DriverManager.getConnection(url, username, password);
             System.out.println(url + "  connected...");
@@ -137,7 +135,7 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    public ResultSet getQA() {
+    public ResultSet getQA() { // generate the question and answer from database
         ResultSet rs = null;
         try {
             Statement statement = conn.createStatement();
@@ -180,7 +178,7 @@ public class ContestGUI extends JFrame implements Runnable {
         userInputPanel.add(helpPanel(), BorderLayout.EAST);
     }
 
-    public void displayPanel() {// display panel shows : who wants to be millionare and hints message 
+    public void displayPanel() {// display panel shows : who wants to be millionare logo and hints message 
         displayPanel = new JPanel();
         displayLabel = new JLabel();
         displayLabel.setIcon(logoIcon);
@@ -189,7 +187,7 @@ public class ContestGUI extends JFrame implements Runnable {
         displayPanel.setBackground(gray);
     }
 
-    public JPanel scorePanel() { //NEEDS TO BE DONE , this display the player previous score and the top 3 
+    public JPanel scorePanel() { // Shows the High scores
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new GridLayout(4, 1));
         playerLabel = new JLabel();
@@ -200,10 +198,9 @@ public class ContestGUI extends JFrame implements Runnable {
         scorePanel.add(playerLabel);
 //        findTheTop3();
         readPlayerInfo();
-        JLabel top1Label = new JLabel("Top 1 "+ top1);
-        JLabel top2Label = new JLabel("Top 2 "+ top2);
-        JLabel top3Label = new JLabel("Top 3 "+ top3);
-        
+        JLabel top1Label = new JLabel("Top 1 " + top1);
+        JLabel top2Label = new JLabel("Top 2 " + top2);
+        JLabel top3Label = new JLabel("Top 3 " + top3);
 
         top1Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         top2Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
@@ -216,7 +213,7 @@ public class ContestGUI extends JFrame implements Runnable {
         return scorePanel;
     }
 
-    public void prizePanel() {
+    public void prizePanel() { // Prize showing panel
         prizePanel = new JPanel();
         currentPrize = new JLabel("Current Prize: " + String.valueOf(prize));
         nextPrize = new JLabel("Prize Goal: " + String.valueOf(prizeGoal));
@@ -229,7 +226,7 @@ public class ContestGUI extends JFrame implements Runnable {
         prizePanel.add(nextPrize);
     }
 
-    public void questionPanel() {
+    public void questionPanel() { // Question panel
         questionPanel = new JPanel();
         questionPanel.setBackground(gray);
         questionPanel.setLayout(new BorderLayout());
@@ -289,11 +286,11 @@ public class ContestGUI extends JFrame implements Runnable {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-//            Map<String, Integer> records = readPlayerInfo();
             jb = (JButton) e.getSource();
             playerAnswer = jb.getText();
             check = checkAnswer(playerAnswer.charAt(0));
             System.out.println(checkAnswer(playerAnswer.charAt(0)));
+            //Checks correct answers
             if (check) {
                 getQA();
                 questionLabel.setText(question);
@@ -302,12 +299,13 @@ public class ContestGUI extends JFrame implements Runnable {
                 cButton.setText(c);
                 dButton.setText(d);
                 questionPanel.revalidate();
+
                 // change the map value 
+                // and write it into the player file
                 records.put(playerGUI.getPlayerName(), prize);
                 writeToPlayerInfo(records);
                 currentPrize.setText("Current Prize: " + String.valueOf(prize));
                 nextPrize.setText("Prize Goal: " + String.valueOf(prizeGoal));
-//                saveFile()
                 prizePanel.revalidate();
 
                 displayLabel.setText("");
@@ -351,7 +349,7 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    private class helpButtonsMouseListener implements MouseListener // have not done the Audience and half half yet 
+    private class helpButtonsMouseListener implements MouseListener //The function button listener
     {
 
         JButton jb;
@@ -359,7 +357,7 @@ public class ContestGUI extends JFrame implements Runnable {
         @Override
         public void mouseClicked(MouseEvent e) {
             jb = (JButton) e.getSource();
-            if (jb.equals(hintButton)) {
+            if (jb.equals(hintButton)) { // if hint pressed
                 System.out.println("Hint Pressed");
                 hintButton.setVisible(false);
                 displayPanel.removeAll();
@@ -367,7 +365,7 @@ public class ContestGUI extends JFrame implements Runnable {
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
                 displayPanel.add(displayLabel);
                 displayPanel.revalidate();
-            } else if (jb.equals(audienceButton)) // display audience panel
+            } else if (jb.equals(audienceButton)) // if audience is pressed
             {
                 audienceButton.setVisible(false);
                 System.out.println("Auidence Pressed");
@@ -377,7 +375,7 @@ public class ContestGUI extends JFrame implements Runnable {
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
                 displayPanel.add(displayLabel);
                 displayPanel.revalidate();
-            } else if (jb.equals(halfButton)) // display audience panel
+            } else if (jb.equals(halfButton)) // if half and half are pressed
             {
                 halfButton.setVisible(false);
                 System.out.println("HalfButton Pressed");
@@ -393,6 +391,7 @@ public class ContestGUI extends JFrame implements Runnable {
                     answerInt = 3;
                 }
 
+                // Disable buttons so that each of the function only allow to be pressed once
                 boolean success;
                 int firstDisabledButton;
                 int secondDisabledButton;
@@ -538,11 +537,7 @@ public class ContestGUI extends JFrame implements Runnable {
     }
 
     public void exitGame() {
-//        Map<String, Integer> records = readPlayerInfo();
-//        saveFile(records);
-//        System.out.println(records);
         System.out.println("You got : " + prize + "    Your goal :" + prizeGoal);
-        
         System.exit(0);
         this.dispose();
         this.setVisible(false);
@@ -558,37 +553,22 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-
-//
-//    //System read the player info as it runs 
-//    // Need to save the file NOT after exit because it crashes
-//    // Need to save the file as the score is updated
-//    // Therefore append everytime user select the answer <<currentScore>>
-//    // Use string.value of prize to get the integer value of prize
-//    // put it into the hashmap as (name, score/prize)
-//    // get the highest and print it
-    
-       public  void readPlayerInfo() {
+    public void readPlayerInfo() {
         HashMap<String, Integer> playerFile = new HashMap<>();
         BufferedReader br = null;
-        int x=0;
+        int x = 0;
         try {
             //read scores txt file
             br = new BufferedReader(new FileReader("PlayerInformation.txt"));
             String line;
             while ((line = br.readLine()) != null) {
                 x++;
-                if(x == 1)
-                {
-                    top1 =line;
-                }
-                else if(x == 2)
-                {
+                if (x == 1) {
+                    top1 = line;
+                } else if (x == 2) {
                     top2 = line;
-                }
-                else if(x == 3)
-                {
-                    top3 =line;
+                } else if (x == 3) {
+                    top3 = line;
                 }
                 for (int i = 0; i < line.length(); i++) {
                     if (line.charAt(i) == ':') // for example  Johnny Li,1000   : comma behind is score
@@ -596,7 +576,7 @@ public class ContestGUI extends JFrame implements Runnable {
                         try {
                             System.out.println(line.substring(0, line.length()));
                             Integer score = Integer.valueOf(line.substring(i + 1, line.length()));
-                            playerFile.put(line.substring(0,i), score);
+                            playerFile.put(line.substring(0, i), score);
                         } catch (NumberFormatException e) {
                             System.err.println(e);
                         }
@@ -617,9 +597,9 @@ public class ContestGUI extends JFrame implements Runnable {
         }
         this.records = playerFile;
     }
-       
+
     public void writeToPlayerInfo(HashMap<String, Integer> records) {
-         Map<String, Integer> sortedMap = sortByValue(records);
+        Map<String, Integer> sortedMap = sortByValue(records);
         PrintWriter pw = null;
         try {
             //create scores txt file
@@ -643,16 +623,16 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-  private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) { // Sorts The value in the hashmap
 
         // 1. Convert Map to List of Map
-                LinkedList<HashMap.Entry<String, Integer>> list =
-                new LinkedList<HashMap.Entry<String, Integer>>(unsortMap.entrySet());
+        LinkedList<HashMap.Entry<String, Integer>> list
+                = new LinkedList<HashMap.Entry<String, Integer>>(unsortMap.entrySet());
         // 2. Sort list with Collections.sort(), provide a custom Comparator
         //    Try switch the o1 o2 position for a different order
         Collections.sort(list, new Comparator<HashMap.Entry<String, Integer>>() {
             public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
+                    Map.Entry<String, Integer> o2) {
                 return (o2.getValue()).compareTo(o1.getValue());
             }
         });
@@ -665,25 +645,19 @@ public class ContestGUI extends JFrame implements Runnable {
 
         return sortedMap;
     }
- public static <K, V> void printMap(Map<K, V> map) {
+
+    public static <K, V> void printMap(Map<K, V> map) { // Printing what ever is in the hashmap
         for (Map.Entry<K, V> entry : map.entrySet()) {
             System.out.println("Key : " + entry.getKey()
                     + " Value : " + entry.getValue());
         }
     }
 
-
+    public void displayScoreFrame(){
+        afterGameScoreLabel.setText("You got: " + String.valueOf(prize));
+    }
+    
     public static void main(String[] args) {
-     
-//
-//        //Getting highest Value
-//         int maxValueInMap=(Collections.max(recordsOfPlayers.values())); // Returns max value
-//         for (Entry<String, Integer> entry : recordsOfPlayers.entrySet()) {  // Itrate through hashmap
-//            if (entry.getValue()== maxValueInMap) {
-//                System.out.println(entry.getKey());     // Print the key with max value
-//            }
-//        }
-        
         ContestGUI contestFrame = new ContestGUI();
         Thread contestThread = new Thread(contestFrame);
         Thread playerThread = new Thread(contestFrame.playerGUI);
