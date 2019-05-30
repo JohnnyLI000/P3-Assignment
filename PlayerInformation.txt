@@ -1,2 +1,4 @@
-Riki 10
-Johnny 50
+Riki 100
+IRIki 0
+
+ 0

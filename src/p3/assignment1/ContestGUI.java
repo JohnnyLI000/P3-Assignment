@@ -19,9 +19,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -34,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -51,13 +54,10 @@ import javax.swing.border.LineBorder;
  *
  * @author Yuan Hao Li
  */
-
-
 //THINGS TO DO: 
 // 1. Save the player score ,output on the score panel
 // 2. if the player got all correct , what will happen to the program.
 // 3. Unit testing 
-
 public class ContestGUI extends JFrame implements Runnable {
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -83,7 +83,7 @@ public class ContestGUI extends JFrame implements Runnable {
     private int questionID = 0;
     private int prize = 0, prizeGoal = 100;
     private String[] playerArray; // top 3 players
-
+    HashMap<String,Integer> records;
     public ContestGUI() {
         super();
         playerGUI = new PlayerInformationGUI(this);
@@ -186,11 +186,13 @@ public class ContestGUI extends JFrame implements Runnable {
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new GridLayout(4, 1));
         playerLabel = new JLabel();
-        playerLabel.setText("Current Player: " + playerGUI.getPlayerName());
+        playerName = playerGUI.getPlayerName();
+        playerLabel.setText("Current Player: " + playerName);
         playerLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         scorePanel.setBackground(gray);
         scorePanel.add(playerLabel);
 //        findTheTop3();
+        readPlayerInfo();
 
         JLabel top1Label = new JLabel("Top 1 ");
         JLabel top2Label = new JLabel("Top 2 ");
@@ -279,6 +281,7 @@ public class ContestGUI extends JFrame implements Runnable {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+//            Map<String, Integer> records = readPlayerInfo();
             jb = (JButton) e.getSource();
             playerAnswer = jb.getText();
             check = checkAnswer(playerAnswer.charAt(0));
@@ -291,15 +294,18 @@ public class ContestGUI extends JFrame implements Runnable {
                 cButton.setText(c);
                 dButton.setText(d);
                 questionPanel.revalidate();
-
+                // change the map value 
+                records.put(playerGUI.getPlayerName(), prize);
+                writeToPlayerInfo(records);
                 currentPrize.setText("Current Prize: " + String.valueOf(prize));
                 nextPrize.setText("Prize Goal: " + String.valueOf(prizeGoal));
+//                saveFile()
                 prizePanel.revalidate();
 
                 displayLabel.setText("");
                 displayLabel.setIcon(logoIcon);
                 displayPanel.revalidate();
-                
+
                 aButton.setVisible(true);
                 bButton.setVisible(true);
                 cButton.setVisible(true);
@@ -524,9 +530,10 @@ public class ContestGUI extends JFrame implements Runnable {
     }
 
     public void exitGame() {
+//        Map<String, Integer> records = readPlayerInfo();
+//        saveFile(records);
+//        System.out.println(records);
         System.out.println("You got : " + prize + "    Your goal :" + prizeGoal);
-        /// Map<String,Integer> records = readPlayerInfo();
-        //System.out.println(records);
         System.exit(0);
         this.dispose();
         this.setVisible(false);
@@ -542,15 +549,25 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    public static Map<String, Integer> readPlayerInfo() {
-        Map<String, Integer> playerFile = new HashMap<>();
+
+//
+//    //System read the player info as it runs 
+//    // Need to save the file NOT after exit because it crashes
+//    // Need to save the file as the score is updated
+//    // Therefore append everytime user select the answer <<currentScore>>
+//    // Use string.value of prize to get the integer value of prize
+//    // put it into the hashmap as (name, score/prize)
+//    // get the highest and print it
+    
+       public  void readPlayerInfo() {
+        HashMap<String, Integer> playerFile = new HashMap<>();
         BufferedReader br = null;
         try {
             //read scores txt file
             br = new BufferedReader(new FileReader("PlayerInformation.txt"));
             String line;
             while ((line = br.readLine()) != null) {
-                String[] splitString = line.split(":");
+                String[] splitString = line.split(" ");
                 playerFile.put(splitString[0], Integer.valueOf(splitString[1]));
             }
         } catch (IOException ex) {
@@ -564,45 +581,50 @@ public class ContestGUI extends JFrame implements Runnable {
                 }
             }
         }
-        return playerFile;
+        this.records = playerFile;
     }
-
-    public static void writeToPlayerInfo(Map<String, Integer> records) {
+       
+    public void writeToPlayerInfo(HashMap<String, Integer> records) {
         PrintWriter pw = null;
         try {
             //create scores txt file
             pw = new PrintWriter("PlayerInformation.txt");
             for (Map.Entry<String, Integer> recordEntry : records.entrySet()) {
-                pw.println(recordEntry.getKey() + ":" + recordEntry.getValue());
+                //if this contains the current player, append to it
+//        //else just record the player key and value
+                if (recordEntry.getKey().equals(playerName)) {
+                    recordEntry.setValue(prize);
+                }
+
+                pw.println(recordEntry.getKey() + " " + recordEntry.getValue());
 
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ContestGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+            System.err.println(e);
         } finally {
             if (pw != null) {
                 pw.close();
             }
         }
     }
-
-    public static String parseInput(Scanner scanner, Map<String, Integer> records) {
-        String input = scanner.nextLine();
-        writeToPlayerInfo(records);
-        System.out.println("File saved.");
-        System.exit(0);
-        return input;
-    }
-
+    
     public static void main(String[] args) {
-
+     
+//
+//        //Getting highest Value
+//         int maxValueInMap=(Collections.max(recordsOfPlayers.values())); // Returns max value
+//         for (Entry<String, Integer> entry : recordsOfPlayers.entrySet()) {  // Itrate through hashmap
+//            if (entry.getValue()== maxValueInMap) {
+//                System.out.println(entry.getKey());     // Print the key with max value
+//            }
+//        }
+        
         ContestGUI contestFrame = new ContestGUI();
         Thread contestThread = new Thread(contestFrame);
         Thread playerThread = new Thread(contestFrame.playerGUI);
         contestThread.start();
         playerThread.start();
-
-        //      Map<String,Integer> records = readPlayerInfo();
-        // Need to parse the input so file can be saved
-        // 
     }
 }

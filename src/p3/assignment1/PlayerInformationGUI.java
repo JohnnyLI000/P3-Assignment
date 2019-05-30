@@ -78,7 +78,11 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String str = inputName.getText();
+                String str;
+                do{
+                    str = inputName.getText();
+                }while(str.contains(" ") || str.equals("")|| str == null);
+                
                 System.out.println("Name Printing");
                 text.setText(str);
                 centerPanel.repaint();
@@ -101,6 +105,8 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
     }
 
     public void output(String content) {  //output player information into text 
+       int intialScore = 0;
+       String space = " ";
         FileWriter fw = null;
         try {
             File f = new File("PlayerInformation.txt");
@@ -109,7 +115,7 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
             e.printStackTrace();
         }
         PrintWriter pw = new PrintWriter(fw);
-        pw.print("\n"+content);
+        pw.println(content + space + intialScore );
         pw.flush();
         try {
             fw.flush();
