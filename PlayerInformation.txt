@@ -1,4 +1,9 @@
-Riki 100
-IRIki 0
-
- 0
+TEST:3100
+Nani:3100
+dada:700
+Riki Likes sausages:700
+dadaddad:300
+naniiiii:300
+John:300
+Johnny Li:300
+hahah 0

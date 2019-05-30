@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.List;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +35,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -84,6 +88,9 @@ public class ContestGUI extends JFrame implements Runnable {
     private int prize = 0, prizeGoal = 100;
     private String[] playerArray; // top 3 players
     HashMap<String,Integer> records;
+    
+    String top1,top2,top3;
+    
     public ContestGUI() {
         super();
         playerGUI = new PlayerInformationGUI(this);
@@ -193,10 +200,11 @@ public class ContestGUI extends JFrame implements Runnable {
         scorePanel.add(playerLabel);
 //        findTheTop3();
         readPlayerInfo();
+        JLabel top1Label = new JLabel("Top 1 "+ top1);
+        JLabel top2Label = new JLabel("Top 2 "+ top2);
+        JLabel top3Label = new JLabel("Top 3 "+ top3);
+        
 
-        JLabel top1Label = new JLabel("Top 1 ");
-        JLabel top2Label = new JLabel("Top 2 ");
-        JLabel top3Label = new JLabel("Top 3 ");
         top1Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         top2Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
         top3Label.setFont(new Font("Comic Sans MS", Font.BOLD, 44));
@@ -534,6 +542,7 @@ public class ContestGUI extends JFrame implements Runnable {
 //        saveFile(records);
 //        System.out.println(records);
         System.out.println("You got : " + prize + "    Your goal :" + prizeGoal);
+        
         System.exit(0);
         this.dispose();
         this.setVisible(false);
@@ -562,13 +571,38 @@ public class ContestGUI extends JFrame implements Runnable {
        public  void readPlayerInfo() {
         HashMap<String, Integer> playerFile = new HashMap<>();
         BufferedReader br = null;
+        int x=0;
         try {
             //read scores txt file
             br = new BufferedReader(new FileReader("PlayerInformation.txt"));
             String line;
             while ((line = br.readLine()) != null) {
-                String[] splitString = line.split(" ");
-                playerFile.put(splitString[0], Integer.valueOf(splitString[1]));
+                x++;
+                if(x == 1)
+                {
+                    top1 =line;
+                }
+                else if(x == 2)
+                {
+                    top2 = line;
+                }
+                else if(x == 3)
+                {
+                    top3 =line;
+                }
+                for (int i = 0; i < line.length(); i++) {
+                    if (line.charAt(i) == ':') // for example  Johnny Li,1000   : comma behind is score
+                    {
+                        try {
+                            System.out.println(line.substring(0, line.length()));
+                            Integer score = Integer.valueOf(line.substring(i + 1, line.length()));
+                            playerFile.put(line.substring(0,i), score);
+                        } catch (NumberFormatException e) {
+                            System.err.println(e);
+                        }
+                    }
+                }
+
             }
         } catch (IOException ex) {
             Logger.getLogger(ContestGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -585,19 +619,18 @@ public class ContestGUI extends JFrame implements Runnable {
     }
        
     public void writeToPlayerInfo(HashMap<String, Integer> records) {
+         Map<String, Integer> sortedMap = sortByValue(records);
         PrintWriter pw = null;
         try {
             //create scores txt file
             pw = new PrintWriter("PlayerInformation.txt");
-            for (Map.Entry<String, Integer> recordEntry : records.entrySet()) {
+            for (Map.Entry<String, Integer> recordEntry : sortedMap.entrySet()) {
                 //if this contains the current player, append to it
 //        //else just record the player key and value
                 if (recordEntry.getKey().equals(playerName)) {
                     recordEntry.setValue(prize);
                 }
-
-                pw.println(recordEntry.getKey() + " " + recordEntry.getValue());
-
+                pw.println(recordEntry.getKey() + ":" + recordEntry.getValue());
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ContestGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -609,7 +642,37 @@ public class ContestGUI extends JFrame implements Runnable {
             }
         }
     }
-    
+
+  private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+
+        // 1. Convert Map to List of Map
+                LinkedList<HashMap.Entry<String, Integer>> list =
+                new LinkedList<HashMap.Entry<String, Integer>>(unsortMap.entrySet());
+        // 2. Sort list with Collections.sort(), provide a custom Comparator
+        //    Try switch the o1 o2 position for a different order
+        Collections.sort(list, new Comparator<HashMap.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+ public static <K, V> void printMap(Map<K, V> map) {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            System.out.println("Key : " + entry.getKey()
+                    + " Value : " + entry.getValue());
+        }
+    }
+
+
     public static void main(String[] args) {
      
 //

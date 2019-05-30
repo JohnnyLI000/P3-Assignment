@@ -79,16 +79,12 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str;
-                do{
-                    str = inputName.getText();
-                }while(str.contains(" ") || str.equals("")|| str == null);
-                
+                str = inputName.getText();
                 System.out.println("Name Printing");
                 text.setText(str);
                 centerPanel.repaint();
                 output(str);
                 isClosed = true;
-                System.out.println("Setted the isclosed = true");
                 notifyUser();
                 playerInformationFrame.setVisible(false);
                 
