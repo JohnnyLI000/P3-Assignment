@@ -1,12 +1,16 @@
 Almost Done:6300
-TEST:3100
 Nani:3100
+TEST:3100
 Finally Done:1500
-dada:700
 Johnny Li:700
+my:700
 Riki Likes sausages:700
 dadaddad:300
 naniiiii:300
 John:300
+dada:300
 Riko:300
+dadada:300
+:100
 Wohoo:100
+ 0

@@ -318,6 +318,8 @@ public class ContestGUI extends JFrame implements Runnable {
                 dButton.setVisible(true);
 
             } else {
+                DisplayScoreFrame scoreFrame = new DisplayScoreFrame();
+                scoreFrame.display(prize);
                 exitGame();
             }
         }
@@ -538,8 +540,6 @@ public class ContestGUI extends JFrame implements Runnable {
 
     public void exitGame() {
         System.out.println("You got : " + prize + "    Your goal :" + prizeGoal);
-        System.exit(0);
-        this.dispose();
         this.setVisible(false);
     }
 
@@ -653,8 +653,20 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    public void displayScoreFrame(){
-        afterGameScoreLabel.setText("You got: " + String.valueOf(prize));
+    public class DisplayScoreFrame extends JFrame{    
+       public void display(int prize)
+       {
+           System.out.println("runnn");
+            JFrame scoreFrame = new JFrame();
+           JLabel scoreLabel = new JLabel();
+           scoreLabel.setText("You got $"+prize);
+           scoreLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 40));
+           scoreFrame.add(scoreLabel);
+           scoreFrame.setSize(width / 3, height / 3);
+           scoreFrame.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
+           scoreFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           scoreFrame.setVisible(true);
+       }
     }
     
     public static void main(String[] args) {
