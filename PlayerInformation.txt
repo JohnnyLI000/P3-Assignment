@@ -1,7 +1,9 @@
 Almost Done:6300
+dadadada:5700
 Nani:3100
 TEST:3100
 Finally Done:1500
+john likes muscles:1100
 Johnny Li:700
 my:700
 Riki Likes sausages:700
@@ -13,4 +15,3 @@ Riko:300
 dadada:300
 :100
 Wohoo:100
- 0

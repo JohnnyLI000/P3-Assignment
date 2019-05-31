@@ -151,7 +151,7 @@ public class ContestGUI extends JFrame implements Runnable {
             d = rs.getString(6);
             answer = rs.getString(7);
             hint = rs.getString(8);
-            prizeCount(questionID);
+            prize = prizeCount(questionID);
         } catch (SQLException ex) {
             System.err.println(ex);
         }
@@ -543,14 +543,15 @@ public class ContestGUI extends JFrame implements Runnable {
         this.setVisible(false);
     }
 
-    public void prizeCount(int questionNo) // start from 100 , next question is a double the prize of the privous one 
+    public int prizeCount(int questionNo) // start from 100 , next question is a double the prize of the privous one 
     {
-        prize = 0;
         prizeGoal = 100;
         for (int i = 1; i < questionNo; i++) {
             prize += prizeGoal;
             prizeGoal *= 2;
         }
+        
+        return prize;
     }
 
     public void readPlayerInfo() {

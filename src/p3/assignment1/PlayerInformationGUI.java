@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -37,6 +38,7 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
 //    private String playerName;
     private JButton submitButton;
     private boolean isClosed = false;
+    Color gray = new Color(218, 201, 166);
 
     private Frame frame;
     public  PlayerInformationGUI(JFrame frame)
@@ -49,39 +51,39 @@ public class PlayerInformationGUI extends JFrame implements Runnable{
     {
         JFrame playerInformationFrame = new JFrame("Player Enter");
         playerInformationFrame.setSize(width / 2, height / 2);
-        playerInformationFrame.setLocation((width - this.getWidth()) / 2, (height - this.getHeight()) / 2);
+        playerInformationFrame.setLocation((width - this.getWidth()) / 3, (height - this.getHeight()) / 3);
         playerInformationFrame.setLayout(new GridLayout(3, 1));  // seperate it into two parts 
 
         //Top Panel
         JPanel topPanel = new JPanel();
-        JLabel playerName = new JLabel("Player Name:");
-        inputName = new JTextField(20);
-        playerName.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
-        topPanel.setBackground(Color.red);
-        topPanel.add(playerName);
-        topPanel.add(inputName);
+        topPanel.setBackground(gray);
+
 
         //NEED CENTER PANEL
         JPanel centerPanel = new JPanel();
-        JLabel text = new JLabel("");
-        text.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
-        centerPanel.add(text);
-        centerPanel.setBackground(Color.yellow);
-
+        centerPanel.setBackground(gray);
+        JLabel playerName = new JLabel("Player Name:");
+        inputName = new JTextField(40);
+        playerName.setFont(new Font("Comic Sans MS", Font.BOLD, 32));
+        centerPanel.add(playerName);
+        centerPanel.add(inputName);
+        
+        
         //Bottom Panel
         JPanel bottomPanel = new JPanel();
         submitButton = new JButton("Submit");
-        submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
-        bottomPanel.setBackground(Color.green);
+        bottomPanel.setBackground(gray);
         bottomPanel.add(submitButton);
-
+        submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 33));
+        submitButton.setBackground(Color.white);
+        submitButton.setForeground(Color.black);
+        submitButton.setBorder(new LineBorder(Color.BLACK, 4));
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str;
                 str = inputName.getText();
                 System.out.println("Name Printing");
-                text.setText(str);
                 centerPanel.repaint();
                 output(str);
                 isClosed = true;
