@@ -545,6 +545,7 @@ public class ContestGUI extends JFrame implements Runnable {
 
     public int prizeCount(int questionNo) // start from 100 , next question is a double the prize of the privous one 
     {
+        prize = 0;
         prizeGoal = 100;
         for (int i = 1; i < questionNo; i++) {
             prize += prizeGoal;
@@ -626,11 +627,9 @@ public class ContestGUI extends JFrame implements Runnable {
 
     private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) { // Sorts The value in the hashmap
 
-        // 1. Convert Map to List of Map
         LinkedList<HashMap.Entry<String, Integer>> list
                 = new LinkedList<HashMap.Entry<String, Integer>>(unsortMap.entrySet());
-        // 2. Sort list with Collections.sort(), provide a custom Comparator
-        //    Try switch the o1 o2 position for a different order
+
         Collections.sort(list, new Comparator<HashMap.Entry<String, Integer>>() {
             public int compare(Map.Entry<String, Integer> o1,
                     Map.Entry<String, Integer> o2) {
@@ -638,7 +637,6 @@ public class ContestGUI extends JFrame implements Runnable {
             }
         });
 
-        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
         Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
@@ -649,8 +647,7 @@ public class ContestGUI extends JFrame implements Runnable {
 
     public static <K, V> void printMap(Map<K, V> map) { // Printing what ever is in the hashmap
         for (Map.Entry<K, V> entry : map.entrySet()) {
-            System.out.println("Key : " + entry.getKey()
-                    + " Value : " + entry.getValue());
+            System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
         }
     }
 

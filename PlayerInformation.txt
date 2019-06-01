@@ -7,11 +7,11 @@ john likes muscles:1100
 Johnny Li:700
 my:700
 Riki Likes sausages:700
+:300
 dadaddad:300
 naniiiii:300
 John:300
 dada:300
 Riko:300
 dadada:300
-:100
 Wohoo:100
